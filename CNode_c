@@ -1,0 +1,36 @@
+from selenium import webdriver
+import time
+import unittest
+import xlrd
+class zhuce_1(unittest.TestCase):
+#进入注册页面
+    def zhu_1(self):
+        self.driver = webdriver.Chrome()
+        url='http://118.31.19.120:3000/'
+        self.driver.get(url)
+        self.driver.implicitly_wait(3)
+        self.driver.find_element_by_xpath('/html/body/div[1]/div/div/ul/li[5]/a').click()
+        self.driver.implicitly_wait(20)
+#读取参数
+    def excel_e(self):
+        global table
+        data = xlrd.open_workbook('D:\\code\\login_c.xlsx')
+        table = data.sheets()[0]
+        user_name = table.cell(0,0).value
+        password = table.cell(0,1).value
+        confirm_password = table.cell(0,2).value
+        email_id = table.cell(0,3).value
+        print (user_name, password ,confirm_password,email_id)
+#定位元素
+    def login_2(self,user_name,password,confirm_password,email_id):
+        self.driver.find_element_by_xpath('//*[@id="loginname"]').send_keys(user_name)
+        self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(password)
+        self.driver.find_element_by_xpath('//*[@id="re_pass"]').send_keys(confirm_password)
+        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(email_id)
+        self.driver.find_element_by_xpath('//*[@id="signup_form"]/div[5]/input').click()
+
+    def tearDown(self):
+        self.driver.quit()
+
+if __name__ == "__main__":
+    unittest.main()
